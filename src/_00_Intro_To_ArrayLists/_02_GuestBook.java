@@ -1,6 +1,11 @@
 package _00_Intro_To_ArrayLists;
 
-public class _02_GuestBook {
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+
+public class _02_GuestBook implements ActionListener {
     /*
      * Create a GUI with two buttons. One button reads "Add Name" and the other
      * button reads "View Names". When the add name button is clicked, display
@@ -14,4 +19,38 @@ public class _02_GuestBook {
      * Guest #4: Donny Doners
      */
 
+    JFrame frame = new JFrame();
+    JPanel panel = new JPanel();
+    JButton viewNames = new JButton();
+    JButton addName = new JButton();
+    ArrayList<String> names = new ArrayList<String>();
+
+    void CreateUI(){
+        frame.add(panel); panel.add(viewNames); panel.add(addName);
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE); frame.setVisible(true);
+        viewNames.setText("View Names"); addName.setText("Add Name");
+        viewNames.addActionListener(this); addName.addActionListener(this);
+        frame.pack();
+    }
+
+    public static void main(String[] args) {
+        _02_GuestBook guestBook = new _02_GuestBook();
+        guestBook.CreateUI();
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource()==viewNames) {
+            String message = "";
+            int i = 0;
+            for (String name:names) {
+                i++;
+                message += "Guest #" + i + ": " + name +System.lineSeparator();
+            }
+            JOptionPane.showMessageDialog(null, message);
+        } else if(e.getSource()==addName) {
+            String addThisName = JOptionPane.showInputDialog("What name would you like to add? (Firstname Lastname)");
+            names.add(addThisName);
+        }
+    }
 }

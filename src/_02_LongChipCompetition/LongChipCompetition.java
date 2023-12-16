@@ -13,9 +13,30 @@ public class LongChipCompetition {
      */
     private ArrayList<Beatle> theBeatles = new ArrayList<Beatle>();
 
+
     public static void main(String[] args) {
         LongChipCompetition lcc = new LongChipCompetition();
+        lcc.initializeBeatles();
+        ArrayList<Chip> theseChips = new ArrayList<Chip>();
+        String beatleOne = ""; double beatleOneChip = 0;
+        double chipRandom; double chipLong = 0; String thisBeatleName;
+        for(Beatle oneBeatle: lcc.theBeatles) {
+            theseChips = oneBeatle.getChips();
+            thisBeatleName = oneBeatle.getName();
+            for(Chip oneChip: theseChips) {
+                chipRandom = oneChip.getLength();
+                if(chipLong <= chipRandom) {
+                    chipLong = chipRandom;
+                }
+            }
+            if(chipLong > beatleOneChip){
+                beatleOneChip = chipLong;
+                beatleOne = thisBeatleName;
+            }
+        }
+        System.out.printf("The longest fry is: %.2f cm with the chip-holder being: %s", beatleOneChip, beatleOne);
 
+        //System.out.println("The longest fry is: " + beatleOneChip + "cm with the chip-holder being: " + beatleOne);
     }
 
     private void initializeBeatles() {
