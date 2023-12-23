@@ -1,6 +1,7 @@
 package _03_RemovingStuffFromArrayLists;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class ArrayListRemove {
 
@@ -23,7 +24,19 @@ public class ArrayListRemove {
     // 1. Write a method that removes the dirt in the yard and returns the
     //    ArrayList
     public static ArrayList<Stuff> cleanOutTheYard( ArrayList<Stuff> yard ) {
-        
+        ArrayList<Stuff> dirt = new ArrayList<Stuff>();
+        dirt.add("dirt");
+        for (Stuff thing: yard) {
+            System.out.println(thing.type);
+            if("dirt".equals(thing.type)) {
+                yard.remove(thing);
+            }
+        }
+        Stuff Dirt;
+        yard.remove(Dirt);
+        for (Stuff thing: yard) {
+            System.out.println(thing);
+        }
         return yard;
     }
     
