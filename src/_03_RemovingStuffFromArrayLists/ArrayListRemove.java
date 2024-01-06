@@ -24,26 +24,26 @@ public class ArrayListRemove {
     // 1. Write a method that removes the dirt in the yard and returns the
     //    ArrayList
     public static ArrayList<Stuff> cleanOutTheYard( ArrayList<Stuff> yard ) {
-        ArrayList<Stuff> dirt = new ArrayList<Stuff>();
-        dirt.add("dirt");
+        ArrayList<Stuff> dirtlessYard = new ArrayList<Stuff>();
         for (Stuff thing: yard) {
             System.out.println(thing.type);
-            if("dirt".equals(thing.type)) {
-                yard.remove(thing);
+            if(thing.type != "dirt") {
+                dirtlessYard.add(thing);
             }
         }
-        Stuff Dirt;
-        yard.remove(Dirt);
-        for (Stuff thing: yard) {
-            System.out.println(thing);
-        }
-        return yard;
+        return dirtlessYard;
     }
     
     // 2. Write a method that removes the hash tag ('#') characters from the
     //    ArrayList and returns it
     public static ArrayList<Character> removeHashTags(ArrayList<Character> list) {
-
-        return list;
+        ArrayList<Character> noHashBrowns = new ArrayList<Character>();
+        for (Character character: list) {
+            System.out.println(character.charValue());
+            if(character!='#') {
+                noHashBrowns.add(character);
+            }
+        }
+        return noHashBrowns;
     }
 }
