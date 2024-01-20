@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Random;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -22,6 +23,7 @@ public class GameBoard extends JFrame implements ActionListener {
     static int TOTAL_CARDS = 20;
     
     ArrayList<Card> cards;
+    ArrayList<Integer> numList;
     
     JPanel panel;
     JLabel timeLabel;
@@ -37,17 +39,21 @@ public class GameBoard extends JFrame implements ActionListener {
         updateTimer = new Timer(750, this);
         
         // Can't play the game if there isn't an even number of cards
+        // 2. Initialize the ArrayList of Cards declared above
+        // 3. Create TOTAL_CARDS number of objects each with a value of 1.
+        //    Also, add action listeners to each Card object and then add each
+        //    of the Card objects to the ArrayList of Cards.
+
         if( TOTAL_CARDS % 2 != 0) {
             System.out.println("ERROR: Odd number of total cards, " + TOTAL_CARDS);
             System.exit(1);
         }
-        
-        // 2. Initialize the ArrayList of Cards declared above
+        numList = new ArrayList<Integer>();
+        Random randy = new Random();
+        for (int i = 0; i <= TOTAL_CARDS; i++) {
+            numList.add(randy.nextInt(52)+1);
+        } 
         cards = new ArrayList<Card>();
-        
-        // 3. Create TOTAL_CARDS number of objects each with a value of 1.
-        //    Also, add action listeners to each Card object and then add each
-        //    of the Card objects to the ArrayList of Cards.
         for (int i = 0; i < TOTAL_CARDS/2; i++) {
             Card card = new Card(i);
             Card card2 = new Card(i);
@@ -55,24 +61,23 @@ public class GameBoard extends JFrame implements ActionListener {
             card2.addActionListener(this);
             cards.add(card);
             cards.add(card2);
+            card.setFaceUpIcon(Card.cardImagesPath + numList.get(i) + ".png");
+            card2.setFaceUpIcon(Card.cardImagesPath + numList.get(i) + ".png");
         }
 
         // 4. Use Collections.shuffle() method to randomize the order of
         //    the cards in the ArrayList
-        Collections.shuffle(cards);
-        
         // 5. Initialize the panel variable declared above
-        panel = new JPanel();
-        
         // 6. Add all of the Card objects to the panel
+        // 7. Call the setupGui() method to set up the frame
+        // 8. Call the startGame() method to start the game
+
+        Collections.shuffle(cards);
+        panel = new JPanel();
         for(Card card: cards){
             panel.add(card);
         }
-        
-        // 7. Call the setupGui() method to set up the frame
         setupGui(cards);
-        
-        // 8. Call the startGame() method to start the game
         startGame();
     }
 

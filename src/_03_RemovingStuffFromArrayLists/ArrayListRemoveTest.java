@@ -61,8 +61,8 @@ class ArrayListRemoveTest {
         truth.add('#');
         char[] expectedAnswer = "california is warmer".toCharArray();
         ArrayList<Character> actualAnswer = ArrayListRemove.removeHashTags(truth);
-        
-        assertTrue(actualAnswer.size() == expectedAnswer.length);
+
+        assertEquals(actualAnswer.size(), expectedAnswer.length);
         
         for( int i = 0; i < expectedAnswer.length; i++ ) {
             assertEquals((int)expectedAnswer[i], (int)actualAnswer.get(i));

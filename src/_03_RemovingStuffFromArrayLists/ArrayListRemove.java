@@ -1,7 +1,6 @@
 package _03_RemovingStuffFromArrayLists;
 
 import java.util.ArrayList;
-import java.util.Objects;
 
 public class ArrayListRemove {
 
@@ -27,7 +26,7 @@ public class ArrayListRemove {
         ArrayList<Stuff> dirtlessYard = new ArrayList<Stuff>();
         for (Stuff thing: yard) {
             System.out.println(thing.type);
-            if(thing.type != "dirt") {
+            if(!"dirt".equals(thing.type)) {
                 dirtlessYard.add(thing);
             }
         }
