@@ -18,77 +18,81 @@ public class GameBoard extends JFrame implements ActionListener {
     private static final long serialVersionUID = 1L;
     static Card firstSelectedCard = null;
     static Card secondSelectedCard = null;
-    
+
     // 1. Initialize TOTAL_CARDS to 2;
-    static int TOTAL_CARDS = 20;
-    
+    static int TOTAL_CARDS = 16;
+
     ArrayList<Card> cards;
     ArrayList<Integer> numList;
-    
+
     JPanel panel;
     JLabel timeLabel;
     JButton newGameButton;
-    
+
     Timer updateTimer;
     Timer gameClock;
-    
+
     int seconds;
-    
+
     public void setup() {
         gameClock = new Timer(1000, this);
         updateTimer = new Timer(750, this);
-        
-        // Can't play the game if there isn't an even number of cards
-        // 2. Initialize the ArrayList of Cards declared above
-        // 3. Create TOTAL_CARDS number of objects each with a value of 1.
-        //    Also, add action listeners to each Card object and then add each
-        //    of the Card objects to the ArrayList of Cards.
 
-        if( TOTAL_CARDS % 2 != 0) {
+        // Can't play the game if there isn't an even number of cards
+        if (TOTAL_CARDS % 2 != 0) {
             System.out.println("ERROR: Odd number of total cards, " + TOTAL_CARDS);
             System.exit(1);
         }
+
+        // 2. Initialize the ArrayList of Cards declared above
         numList = new ArrayList<Integer>();
+
+        // 3. Create TOTAL_CARDS number of objects each with a value of 1.
+        //    Also, add action listeners to each Card object and then add each
+        //    of the Card objects to the ArrayList of Cards.
         Random randy = new Random();
         for (int i = 0; i <= TOTAL_CARDS; i++) {
-            numList.add(randy.nextInt(52)+1);
-        } 
+            numList.add(randy.nextInt(52) + 1);
+        }
         cards = new ArrayList<Card>();
-        for (int i = 0; i < TOTAL_CARDS/2; i++) {
-            Card card = new Card(i);
-            Card card2 = new Card(i);
+        for (int i = 0; i < TOTAL_CARDS / 2; i++) {
+            Card card = new Card(numList.get(i));
+            Card card2 = new Card(numList.get(i));
             card.addActionListener(this);
             card2.addActionListener(this);
             cards.add(card);
-            cards.add(card2);
-            card.setFaceUpIcon(Card.cardImagesPath + numList.get(i) + ".png");
-            card2.setFaceUpIcon(Card.cardImagesPath + numList.get(i) + ".png");
+            cards.add(card2); //makes cards
+            card.setFaceUpIcon(Card.cardImagesPath + numList.get(i) + ".png"); //
+            card2.setFaceUpIcon(Card.cardImagesPath + numList.get(i) + ".png"); //adds images to cards based on a random int
         }
 
         // 4. Use Collections.shuffle() method to randomize the order of
         //    the cards in the ArrayList
-        // 5. Initialize the panel variable declared above
-        // 6. Add all of the Card objects to the panel
-        // 7. Call the setupGui() method to set up the frame
-        // 8. Call the startGame() method to start the game
-
         Collections.shuffle(cards);
+
+        // 5. Initialize the panel variable declared above
         panel = new JPanel();
-        for(Card card: cards){
+
+        // 6. Add all of the Card objects to the panel
+        for (Card card : cards) {
             panel.add(card);
         }
+
+        // 7. Call the setupGui() method to set up the frame
         setupGui(cards);
+
+        // 8. Call the startGame() method to start the game
         startGame();
     }
 
     // 9. Fill in the drawCards method to draw all the cards in the ArrayList.
     //    Run your code and verify 2 cards are displayed and the game works.
     public void drawCards() {
-        for (Card card:cards) {
+        for (Card card : cards) {
             card.draw();
         }
     }
-    
+
     // 10. 
     // There are 52 cards in a normal sized deck of cards (not counting
     // jokers). There are 4 card suits, each with the numbers 2 to 10 and
@@ -102,58 +106,58 @@ public class GameBoard extends JFrame implements ActionListener {
     // the images in the CardImages folder and the setFaceUpIcon() method.
     // Example:
     // card.setFaceUpIcon(Card.cardImagesPath + (i+1) + ".png");
-    
-    
+
+
     public void setupGui(ArrayList<Card> cards) {
         setTitle("League Memory Game");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
         setPreferredSize(new Dimension(1090, 500));
         add(panel);
-        
+
         newGameButton = new JButton("New Game");
         newGameButton.addActionListener(this);
         timeLabel = new JLabel("current time: " + (seconds / 60) + ":" + (seconds % 60));
-        
+
         panel.add(newGameButton);
         panel.add(timeLabel);
-        
+
         pack();
     }
-    
+
     public void checkCards() {
-        
-        if( firstSelectedCard != null && secondSelectedCard != null ) {
-            
-            if( firstSelectedCard.isSame(secondSelectedCard) ) {
+
+        if (firstSelectedCard != null && secondSelectedCard != null) {
+
+            if (firstSelectedCard.isSame(secondSelectedCard)) {
                 firstSelectedCard.remove();
                 secondSelectedCard.remove();
             } else {
                 firstSelectedCard.setFaceUp(false);
                 secondSelectedCard.setFaceUp(false);
             }
-            
+
             firstSelectedCard = null;
             secondSelectedCard = null;
         }
     }
-    
+
     public void startGame() {
         this.seconds = 0;
         gameClock.start();
         updateTimer.start();
     }
-    
+
     public void endGame(boolean gameWon) {
         gameClock.stop();
         updateTimer.stop();
-        
-        if(gameWon) {
+
+        if (gameWon) {
             // Matched all the cards
-            
+
             int response = JOptionPane.showConfirmDialog(null, "You win !! "
-                    + "\nPlaying time " + (seconds / 60) + ":" + (seconds % 60)
-                    + "\nAgain ?", "You win",
+                            + "\nPlaying time " + (seconds / 60) + ":" + (seconds % 60)
+                            + "\nAgain ?", "You win",
                     JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
             if (response == JOptionPane.YES_OPTION) {
                 getContentPane().removeAll();
@@ -164,64 +168,64 @@ public class GameBoard extends JFrame implements ActionListener {
             }
         } else {
             // New game button pressed
-            
+
             getContentPane().removeAll();
             this.setup();
             this.startGame();
         }
     }
-    
+
     private boolean allCardsMatched() {
-        if(this.cards == null) {
-           return false; 
+        if (this.cards == null) {
+            return false;
         }
-        
-        for(Card eachCard : cards ) {
-            if( !eachCard.isMatched() ) {
+
+        for (Card eachCard : cards) {
+            if (!eachCard.isMatched()) {
                 return false;
             }
         }
-        
+
         return true;
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        
-        if( e.getSource() == this.updateTimer ) {
+
+        if (e.getSource() == this.updateTimer) {
             checkCards();
             drawCards();
-            
-            if( allCardsMatched() ) {
+
+            if (allCardsMatched()) {
                 endGame(true);
             }
-            
-        } else if( e.getSource() == this.gameClock ) {
+
+        } else if (e.getSource() == this.gameClock) {
             this.seconds++;
             timeLabel.setText("current time: " + (seconds / 60) + ":" + (seconds % 60));
-        } else if( e.getSource() == this.newGameButton ){
+        } else if (e.getSource() == this.newGameButton) {
             endGame(false);
         } else {
             // Card selected
-            
-            Card newCard = (Card)e.getSource();
-            
-            if( firstSelectedCard == null ) {
+
+            Card newCard = (Card) e.getSource();
+
+            if (firstSelectedCard == null) {
                 // First of 2 cards selected
-                
+
                 firstSelectedCard = newCard;
                 firstSelectedCard.setFaceUp(true);
                 drawCards();
                 updateTimer.stop();
-            } else if( secondSelectedCard == null && newCard != firstSelectedCard ) {
+            } else if (secondSelectedCard == null && newCard != firstSelectedCard) {
                 // Second of 2 cards selected
-                
+
                 secondSelectedCard = newCard;
                 secondSelectedCard.setFaceUp(true);
                 drawCards();
                 updateTimer.restart();
             }
         }
-        
+
     }
 }

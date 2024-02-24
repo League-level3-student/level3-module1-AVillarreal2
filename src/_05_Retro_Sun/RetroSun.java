@@ -24,13 +24,13 @@ public class RetroSun extends PApplet {
     @Override
     public void settings() {
         // 1. Set the size of your sketch to at least 800 width, 600 height
-        
+        this.setSize(WIDTH,HEIGHT);
     }
 
     @Override
     public void setup() {
         // 2. Set bgColor as the background color
-        
+        this.color(bgColor);
     }
 
     @Override
@@ -43,9 +43,12 @@ public class RetroSun extends PApplet {
         // Use fill(sunColors[0]) to make it yellow
         // Use noStroke() to remove the black outline
 
-        // Do you see a yellow sun like in the 1st image?
+        // Do you see a yellow sun like in the 1st image? I cant see the image tho
         // If not, fix your code before proceeding.
 
+        fill(sunColors[0]);
+        noStroke();
+        ellipse(WIDTH/2, HEIGHT/2, 500, 500);
         
         /*
          * PART 2: Drawing a color gradient on the sun
@@ -53,35 +56,43 @@ public class RetroSun extends PApplet {
          * This will make the sun have gradually different colors from the top to bottom
          */
 
+
+
         // Call the loadPixels() method to put all the pixel colors into
         // the pixels[] array
         // https://processing.org/reference/loadPixels_.html
+        loadPixels();
 
+        float sunTopY = sunColors[0];
+        float sunBottomY = sunColors[sunColors.length - 1];
         // We want to change the color of our sun so use an if statement
         // to check if the pixel is the color of the yellow circle.
-
+        //System.out.println("SuntopY = " + sunTopY + ", SunBottonY = " + sunBottomY);
+        for (int i = 0; i < pixels.length; i++) {
         // If pixel[i] is the same color as the color of our circle (sunColors[0]),
         // we need to map the pixel to a color in our sunColors[] array
         // (see 2nd gradient image in RetroSun.html)
-
-        // The top of the sun is yellow (sunColors[0]) and the bottom
-        // of the sun is red (sunColors[sunColors.length - 1]
-
-        // In order to get the right color, the y value from the top of
-        // the sun to the bottom has to be mapped to a range from 0 to 1.
-        // Use the map() function to do that:
-        // int y = i / width;
-        // float step = map(y, sunTopY, sunBottomY, 0, 1);
-
-        // Call interpolateColor(sunColors, step) and save the color
-        // variable that's returned
-
-        // Set pixels[i] to the returned color
-
+            if (pixels[i] == sunColors[0]) {
+                // The top of the sun is yellow (sunColors[0]) and the bottom
+                // of the sun is red (sunColors[sunColors.length - 1] -> line 66
+                // In order to get the right color, the y value from the top of
+                // the sun to the bottom has to be mapped to a range from 0 to 1.
+                // Use the map() function to do that:
+                int y = i / width;
+                float step = map(y, sunTopY, sunBottomY, 0, 1);
+                System.out.println(step);
+                // Call interpolateColor(sunColors, step) and save the color
+                // variable that's returned
+                int interpolatedColor = interpolateColor(sunColors, step);
+                // Set pixels[i] to the returned color
+                //System.out.println(interpolatedColor);
+                pixels[i] = interpolatedColor;
+            }
+        }
         // Call updatePixels() after your loop through all the pixels to
         // update the pixel colors
         // https://processing.org/reference/updatePixels_.html
-
+        updatePixels();
         
         /*
          * PART 3: Drawing the missing sections at the bottom of the sun
